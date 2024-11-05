@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+# export PATH="$PATH:/usr/local/bin:/usr/bin:/bin"
+TSM_DATA_DIR=${TSM_DATA_DIR:-$HOME/.local/share/tsm}
+mkdir -p $TSM_DATA_DIR
+read "session?Session name (without space): "
+echo "$TSM_DATA_DIR/$session"
