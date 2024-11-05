@@ -1,7 +1,15 @@
 #!/usr/bin/env zsh
 
-# export PATH="$PATH:/usr/local/bin:/usr/bin:/bin"
 TSM_DATA_DIR=${TSM_DATA_DIR:-$HOME/.local/share/tsm}
 mkdir -p $TSM_DATA_DIR
-read "session?Session name (without space): "
-echo "$TSM_DATA_DIR/$session"
+
+case "$@" in
+    "new" ) read "session?Session name (without space): " && script -q -r "$TSM_DATA_DIR/$session" ;;
+    "append" ) command ls -1t $TSM_DATA_DIR | fzf --reverse | read session && script -q -r -a $TSM_DATA_DIR/$session ;;
+    "play" ) command ls -1t $TSM_DATA_DIR | fzf --reverse | xargs -I _ script -dp $TSM_DATA_DIR/_ ;;
+    "list" | "ls" ) command ls -1t $TSM_DATA_DIR ;;
+#     "new" ) read "session?Session name (without space): " && script -q "$TSM_DATA_DIR/$session" ;;
+#     "append" ) command ls -1t $TSM_DATA_DIR | fzf --reverse | read session && script -q -a $TSM_DATA_DIR/$session ;;
+#     "cat" ) command ls -1t $TSM_DATA_DIR | fzf --reverse | xargs -I _ cat $TSM_DATA_DIR/_ ;;
+    * ) echo "Argument error. new, append, play, or list" ;;
+esac
